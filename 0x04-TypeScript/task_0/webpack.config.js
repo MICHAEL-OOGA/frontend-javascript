@@ -4,16 +4,20 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
+  mode: "development", //
   entry: "./js/main.ts",
   devtool: "inline-source-map",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: "ts-loader",
-        options: {
-          transpileOnly: true,
+        use: {
+          loader: "ts-loader",
+          options: {
+            transpileOnly: true, // Let ForkTsChecker do type checking
+          },
         },
+        exclude: /node_modules/,
       },
     ],
   },
@@ -21,7 +25,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
-    contentBase: "./dist",
+    static: "./dist", //
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
